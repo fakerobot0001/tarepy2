@@ -32,22 +32,22 @@ class Camion:
 class Rueda:
     def __init__(self):
         self.resistencia_actual = random.randint(*p.RESISTENCIA)
-        self.resistencia_total = self.resistencia
+        self.resistencia_total = self.resistencia_actual
         self.estado = "Perfecto"
 
     def gastar(self, accion):
         if accion == "acelerar":
-            resistencia_actual -= 5
+            self.resistencia_actual -= 5
         elif accion == "frenar":
-            resistencia_actual -= 10
+            self.resistencia_actual -= 10
         self.actualizar_estado()
 
     def actualizar_estado(self):
-        if resistencia_actual < 0:
+        if self.resistencia_actual < 0:
             self.estado = "Rota"
-        elif resistencia_actual < self.resistencia_total / 2:
+        elif self.resistencia_actual < self.resistencia_total / 2:
             self.estado = "Gastada"
-        elif resistencia_actual < self.resistencia_total:
+        elif self.resistencia_actual < self.resistencia_total:
             self.estado = "Usada"
 
 ### Esta funcion está completa, NO MODIFICAR ###
@@ -59,6 +59,7 @@ def seleccionar():
     if elegido >= 0 and elegido < len(vehiculos):
         vehiculo = vehiculos[elegido]
         print("Se seleccionó el vehículo", str(vehiculo))
+        return vehiculo
     else:
         print("intentelo denuevo.")
 
@@ -91,7 +92,7 @@ if __name__ == "__main__":
 
 
     ### El codigo de abajo NO SE MODIFICA ###
-    vehiculo = vehiculos[0] # Por default comienza seleccionado el primer vehículo  
+    vehiculo = vehiculos[0] # Por default comienza seleccionado el primer vehículo, si no hay vehículos instanciados esto tirará error.
 
     dict_opciones = {1: ("Seleccionar Vehiculo", seleccionar),
                      2: ("Acelerar", accion),
@@ -117,7 +118,7 @@ if __name__ == "__main__":
         
         if op != 0 and op in dict_opciones.keys():
             if op == 1:
-                dict_opciones[op][1]()
+                vehiculo = dict_opciones[op][1]()
             else:
                 dict_opciones[op][1](vehiculo, op)
         elif op == 0:
